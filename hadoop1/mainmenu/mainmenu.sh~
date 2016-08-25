@@ -1,0 +1,53 @@
+#!bin/bash
+main()
+{
+dialog --backtitle "Main Menu" --menu "Please Select" 20 30 8 1 "Put a file" 2 "Delete a file" 3 "Directory info" 4 "list of files" 5 "cluster operations" 6 "Run Map-Red" 7 "Kill cluster" 8 "Logout" 2> /root/Desktop/hadooptemp/mainmenutemp.txt
+selection=$(cat /root/Desktop/hadooptemp/mainmenutemp.txt )
+rm -f /root/Desktop/hadooptemp/mainmenutemp.txt
+if [ $selection == 1 ]
+then
+bash /root/Desktop/hadoop1/mainmenu/sub/put.sh
+elif [ $selection == 2 ]
+then
+bash  /root/Desktop/hadoop1/mainmenu/sub/del.sh
+elif [ $selection == 3 ]
+then
+bash  /root/Desktop/hadoop1/mainmenu/sub/dirinfo.sh
+elif [ $selection == 4 ]
+then
+bash  /root/Desktop/hadoop1/mainmenu/sub/view.sh
+elif [ $selection == 5 ]
+then
+bash  /root/Desktop/hadoop1/mainmenu/sub/clusterop.sh
+elif [ $selection == 6 ]
+then
+bash  /root/Desktop/hadoop1/mainmenu/sub/mapred.sh
+elif [ $selection == 7 ]
+then
+dialog --backtitle "Main Menu" --yesno "Want to Delete cluster and its contents?" 6 40 2> /root/Desktop/hadooptemp/mainmenutemp2.txt
+in=$(cat /root/Desktop/hadooptemp/mainmenutemp2.txt)
+rm -f /root/Desktop/hadooptemp/mainmenutemp2.txt
+if [ $in == 0 ]
+then
+bash /root/Desktop/hadoop1/mainmenu/sub/culdel.sh
+dialog --backtitle "Main Menu" --title "Confirmation" --infobox "THANK YOU" 5 10;
+sleep 2;
+bash /root/Desktop/hadoop1/start.sh
+elif [ $in == 1]
+then
+main;
+else
+main;
+fi
+elif [ $selection == 8 ]
+then
+dialog --backtitle "Main Menu" --infobox "THANK YOU" 5 10;
+sleep 2;
+bash /root/Desktop/hadoop1/start.sh
+else
+dialog --backtitle "Main Menu" --infobox "Wrong choice try again" 5 30;
+main;
+fi
+}
+main;
+

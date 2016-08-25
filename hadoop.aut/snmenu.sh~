@@ -1,0 +1,67 @@
+#!bin/bash
+hadoop fs -mkdir /user;
+smenu()
+{
+echo " 		Single node cluster menu:
+		press:
+		1: To put a file in dfs 
+		2: To delete file from dfs
+		3: To print list of files on DFS
+		4: To get status of cluster(Safemode)
+		5: For checkpointing
+		6: Add User
+		7: To set user Quota
+		9: To delete user
+		8: To run a mapreduce Task
+"
+read sm;
+if [ $sm == 1 ]
+then
+echo "Please enter the file name with complete path: "
+read putf;
+hadoop fs -put $putf / ;
+echo "Your File has been successfully put...."
+smenu;
+elif [ $sm == 2 ]
+then 
+echo "please enter the name of file/folder you want to delete";
+read del;
+hadoop fs -rmr /$del ;
+echo "File successfully deleted... "
+smenu;
+elif [ $sm == 3 ] 
+then
+echo enter directory
+read d;
+echo " The list of files/folders are :  "
+hadoop fs -ls $d;
+smenu;
+elif [ $sm == 4 ]  
+then
+hadoop dfsadmin -safemode get;
+elif [ $sm == 5 ]
+then
+bash /root/Desktop/hadoop.aut/checkpointing.sh
+elif [ $sm == 6 ]
+then
+echo "Press 1:To allow other users 2: Restrict other users "
+read um;
+	if [ $um == 1 ]
+	then
+	hadoop fs -chmod o+w /user
+	echo "Other users Granted access"
+	smenu;
+	elif [ $um == 2 ]
+	then
+	hadoop fs -chmod o-w /user
+	echo "other users access denied!!!...."
+	smenu;
+	else
+	echo "wrong choice"
+	smenu;
+	fi
+else
+echo ""
+fi
+}
+smenu;
